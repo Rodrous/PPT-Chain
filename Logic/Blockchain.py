@@ -17,7 +17,7 @@ class BlockChain:
         block["timestamp"] = time(),
         block["transaction"] = self.current_transaction,
         block["proof"] = proof,
-        block["previous_hash"] = previous_hash or self.hash(self.chain[-1])
+        block["previous_hash"] = previous_hash or hash(self.chain[-1])
 
         self.current_transaction = []
         self.chain.append(block)
@@ -41,7 +41,8 @@ class BlockChain:
             self.new_block(proof=100, previous_hash="1")
         return self.chain[-1]
 
-    def hash(self, block: OrderedDict) -> str:
+    @staticmethod
+    def hash(block: OrderedDict) -> str:
         jsondump = json.dumps(block).encode()
         return hashlib.sha256(jsondump).hexdigest()
 
@@ -51,7 +52,8 @@ class BlockChain:
             proof += 1
         return proof
 
-    def validate_proof(self, lastProof: int, proof: int) -> bool:
+    @staticmethod
+    def validate_proof(lastProof: int, proof: int) -> bool:
         guess = f"{lastProof}{proof}".encode()
         hash_val = hashlib.sha256(guess).hexdigest()
         return hash_val[:5] == "10000"

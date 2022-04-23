@@ -32,7 +32,6 @@ async def mine():
         "Previous_Hash": block["previous_hash"]
     }
 
-    print(blockchainInstance.chain)
     return response
 
 
