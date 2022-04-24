@@ -1,5 +1,4 @@
-import json
-from typing import Optional, Dict, List
+from typing import Dict, List, Any
 from fastapi import FastAPI, Request, HTTPException
 from Logic.Blockchain import BlockChain
 from uuid import uuid4
@@ -59,4 +58,41 @@ async def chain() -> Dict:
         "chain": blockchainInstance.chain,
         "length": len(blockchainInstance.chain)
     }
+    return response
+
+
+@app.post("/node/register")
+async def register_node(request: Request):
+    values: Any = await request.json()
+    nodes: Any = values["nodes"]
+
+    if not nodes:
+        return HTTPException(400, detail="Please Supply a valid list of Nodes!")
+
+    for node in nodes:
+        blockchainInstance.register_node(node)
+
+    response: Dict = {
+        "message": "New nodes has been added",
+        "total_nodes": list(blockchainInstance.nodes)
+    }
+
+    return response
+
+
+@app.get("/nodes/resolve")
+async def consensus():
+    replaced = blockchainInstance.resolve_confilicts()
+    response: Dict = {}
+    if replaced:
+        response = {
+            "message": "Chain was replaced",
+            "new_chain": blockchainInstance.chain
+        }
+    else:
+        response = {
+            "message": "Chain authoritive",
+            "chain": blockchainInstance.chain
+        }
+
     return response
