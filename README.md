@@ -16,7 +16,7 @@ Notes can be found [here](https://rodrous.notion.site/Block-chain-929a6b9f93a643
     uvicorn server:app
 ```
 
-3. Or use Docker compose
+**OR** use Docker compose
    
  ```
     docker-compose up -d
