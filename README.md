@@ -1,7 +1,7 @@
 # PPT-Chain
-Just anathor blockchain.
+Just anathor simple implementation of blockchain.
 
-Notes can be found [here]([https://rodrous.notion.site/Block-chain-929a6b9f93a643338c7675183d7d821f).
+Notes can be found [here](https://rodrous.notion.site/Block-chain-929a6b9f93a643338c7675183d7d821f).
 
 ## How to run
 1. First install dependencies using `pip`
