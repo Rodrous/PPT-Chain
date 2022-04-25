@@ -9,7 +9,7 @@ node_identifier: str = str(uuid4()).replace("-", "")
 
 
 @app.get("/mine")
-async def mine():
+async def mine() -> Dict:
     """
     Running proof of Algorithmn to get the new proof, and get reward for finding the proof
     :return:
@@ -39,7 +39,7 @@ async def mine():
 
 
 @app.post("/transactions/new")
-async def init_transaction(request: Request):
+async def init_transaction(request: Request) -> Dict:
     requestObject: Dict = await request.json()
     requestContent: List = [i for i in requestObject.keys()]
     required: List = ["sender", "receiver", "amount"]
@@ -90,7 +90,7 @@ async def register_node(request: Request) -> Dict | Exception:
 
 
 @app.get("/nodes/resolve")
-async def consensus():
+async def consensus() -> Dict:
     replaced = blockchainInstance.resolve_confilicts()
     response: Dict = {}
     if replaced:
