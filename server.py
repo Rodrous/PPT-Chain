@@ -10,6 +10,10 @@ node_identifier: str = str(uuid4()).replace("-", "")
 
 @app.get("/mine")
 async def mine():
+    """
+    Running proof of Algorithmn to get the new proof, and get reward for finding the proof
+    :return:
+    """
     last_block = blockchainInstance.last_block
     last_proof = last_block["proof"]
     proof_of_work = blockchainInstance.proof_of_work(last_proof)
@@ -62,7 +66,12 @@ async def chain() -> Dict:
 
 
 @app.post("/node/register")
-async def register_node(request: Request):
+async def register_node(request: Request) -> Dict | Exception:
+    """
+    Add a new node to the list of nodes
+    :param request:> Address of node. Eg. 'http://localhost:5000'
+    :return:
+    """
     values: Any = await request.json()
     nodes: Any = values["nodes"]
 
@@ -73,7 +82,7 @@ async def register_node(request: Request):
         blockchainInstance.register_node(node)
 
     response: Dict = {
-        "message": "New nodes has been added",
+        "message": "New nodes has added",
         "total_nodes": list(blockchainInstance.nodes)
     }
 

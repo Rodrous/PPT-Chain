@@ -15,6 +15,12 @@ class BlockChain:
     nodes: Set = field(default_factory=set)
 
     def new_block(self, proof: int, previous_hash: Optional[str]) -> Dict:
+        """
+        Adds a new block to the chain.
+        :param proof: The proof given by the Proof of Work algorithm
+        :param previous_hash: Hash of previous Block
+        :return: New block
+        """
         block: OrderedDict = OrderedDict()
         block["index"] = len(self.chain) + 1
         block["timestamp"] = time(),
@@ -28,6 +34,13 @@ class BlockChain:
         return block
 
     def new_transaction(self, sender: str, receiver: str, amount: int) -> int:
+        """
+        Creates a new transaction to go into next block
+        :param sender: Address of sender
+        :param receiver: Address of reciever
+        :param amount: Amount
+        :return: Index of the block that will hold this transaction
+        """
         self.current_transaction.append(
             {
                 "sender": sender,
@@ -46,6 +59,11 @@ class BlockChain:
 
     @staticmethod
     def hash(block: OrderedDict) -> str:
+        """
+        Creates a SHA-256 of a Block
+        :param block: Block we got from mining
+        :return: Hash of the block.
+        """
         jsondump = json.dumps(block).encode()
         return hashlib.sha256(jsondump).hexdigest()
 
@@ -84,6 +102,10 @@ class BlockChain:
         return True
 
     async def resolve_confilicts(self) -> bool:
+        """
+        Consensus Algorithm, it resolves conflicts by replacing our chain with the longest one in the network.
+        :return: True if our chain was replaced ,False if not
+        """
         neighbours: Set = self.nodes
         new_chain = None
 
